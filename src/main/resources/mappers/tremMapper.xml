@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.student.demo.model.mapper.TremMapper">
+    <select id="selectByid" resultMap="base2">
+        select <include refid="column"></include> from term where tid=#{id}
+    </select>
+
+    <sql id="column">
+        tid,giid,tname
+    </sql>
+
+    <resultMap id="base" type="com.student.demo.pojo.Term">
+        <id property="tid" column="tid"/>
+        <result property="tname" column="tname"/>
+    </resultMap>
+    <resultMap id="base1" type="com.student.demo.pojo.Term" extends="base">
+        <association property="gradeByGiid" javaType="com.student.demo.pojo.Grade" select="com.student.demo.model.mapper.GraderMapper.selectByID" column="giid">
+
+        </association>
+    </resultMap>
+    <resultMap id="base2" type="com.student.demo.pojo.Term" extends="base">
+        <collection property="coursesByTid" ofType="com.student.demo.pojo.Course" select="com.student.demo.model.mapper.CourseMapper.selectAll" column="giid"  >
+
+        </collection>
+    </resultMap>
+
+<!--    <resultMap id="jie" type="com.student.demo.pojo.Term" extends="base">-->
+<!--        <collection property="coursesByTid" ofType="com.student.demo.pojo.Course">-->
+<!--            <id property="cid" column="cid"/>-->
+<!--            <result property="cname" column="cname"/>-->
+
+<!--        </collection>-->
+
+<!--    </resultMap>-->
+
+</mapper>

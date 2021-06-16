@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.student.demo.model.mapper.StudentMapper">
+    <sql id="column">
+         sid,giid,sname,sex,sbirth
+    </sql>
+
+    <resultMap id="base" type="com.student.demo.pojo.Student">
+        <id property="sid" column="sid"/>
+        <result property="sname" column="sname"/>
+        <result property="sex" column="sex"/>
+        <result property="sbirth" column="sbirth"/>
+    </resultMap>
+    <resultMap id="stufen" type="com.student.demo.pojo.Student" extends="base">
+        <association property="gradeByGiid" javaType="com.student.demo.pojo.Grade" select="com.student.demo.model.mapper.GraderMapper.selectByID" column="giid">
+
+        </association>
+    </resultMap>
+    <resultMap id="stuke" type="com.student.demo.pojo.Course">
+
+    </resultMap>
+
+
+
+    <select id="selectAll" resultType="com.student.demo.pojo.Student">
+        select <include refid="column"></include> from  student order by sid
+    </select>
+
+    <select id="selectAll2" resultMap="base">
+        select <include refid="column"></include> from  student order by sid
+    </select>
+    <select id="selectAll3" resultMap="stufen">
+        select <include refid="column"></include> from  student order by sid
+    </select>
+
+
+
+
+
+
+</mapper>
